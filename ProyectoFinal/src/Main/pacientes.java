@@ -83,11 +83,16 @@ public class pacientes {
                                 break;                               
                         } 
                     }
-                    double gn1=1-Math.pow(ss/(ss+sn),2)-Math.pow(sn/(ss+sn),2);
-                    System.out.println(gn1);
-                    double gn2=1-Math.pow(ns/(ns+nn),2)-Math.pow(nn/(ns+nn),2);
-                    System.out.println(gn2);
-                    gn=((ss+sn)/atri.size())*gn1+((ns+nn)/atri.size())*gn2;
+                    double t1=(double)ss/(ss+sn);
+                    double t2=(double)sn/(ss+sn);
+                    double gn1=1-Math.pow(t1,2)-Math.pow(t2,2);
+                    
+                    double t3=(double)ns/(ns+nn);
+                    double t4=(double)nn/(ns+nn);
+                    double gn2=1-Math.pow(t3,2)-Math.pow(t4,2);
+                    double t5=(double)(ss+sn)/atri.size();
+                    double t6=(double)(ns+nn)/atri.size();
+                    gn=(double)Math.round((t5*gn1+t6*gn2)*1000)/1000d;
                     
                 
                 }else{
@@ -99,20 +104,39 @@ public class pacientes {
                         }
                     
                     }
+                    double t1=(double)ss/atri.size();
+                    double t2=(double)nn/atri.size();
                     
-                    gn=1-Math.pow(ss/(atri.size()),2)-Math.pow(nn/atri.size(),2);
-                    System.out.println();
+                    gn=1-Math.pow(t1,2)-Math.pow(t2,2);
+                    //System.out.println(gn);
+                    gn=(double)Math.round(gn*1000)/1000d;
                 
                 }
-                
-                
-                
+
                 return gn;
          
          }
          
-         public void  actGini(String Atributo){
-         
+         public void  actGini(String target){
+             for(Map.Entry x:this.dataset.entrySet()){
+                 String clave=String.valueOf(x.getKey());
+                 if (clave.equals(target)){
+                     double gn=obtenerGini(target, target);
+                     Gini.replace(clave, gn);
+                 
+                 }else{
+                     Gini.put(clave,obtenerGini(clave,target));
+                 }
+                 
+                 
+                 
+                 
+                     
+                     
+                 
+                 
+             
+             }
          
          }
   
@@ -124,11 +148,17 @@ public class pacientes {
 //         for (Map.Entry entry : pc.dataset.entrySet()) {
 //            System.out.println("Clave : " + entry.getKey()
 //                    +" ->"+ " Valor : " + entry.getValue()+"->"+" Dim : "+ ((ArrayList)entry.getValue()).size());
-//        }System.out.println("Diccionario Gini");
+//        System.out.println("Diccionario Gini");
 //         for (Map.Entry entry : pc.Gini.entrySet()) {
 //            System.out.println("Clave : " + entry.getKey()
 //                    +" ->"+ " Valor : " + entry.getValue());
 //                    }
-        System.out.println(pc.obtenerGini("anemia", "anemia"));
+//       System.out.println(pc.obtenerGini("edad", "edad"));
+        pc.actGini("edad");
+        System.out.println("Diccionario Gini");
+         for (Map.Entry entry : pc.Gini.entrySet()) {
+            System.out.println("Clave : " + entry.getKey()
+                    +" ->"+ " Valor : " + entry.getValue());
+                    }
     }
 }
