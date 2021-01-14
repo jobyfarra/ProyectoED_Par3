@@ -10,7 +10,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -21,8 +21,8 @@ import java.util.Map;
  * @author User
  */
 public class pacientes {
-         private Map <String,ArrayList<Integer>> dataset = new LinkedHashMap<String,ArrayList<Integer>>();
-         private Map <String,Double> Gini = new LinkedHashMap <String,Double> ();
+         private Map <String,ArrayList<Integer>> dataset = new LinkedHashMap<>();
+         private Map <String,Double> Gini = new LinkedHashMap <> ();
          
          public static pacientes  CargarDatos(String nombreA) {
              pacientes p1= new pacientes();
@@ -49,8 +49,7 @@ public class pacientes {
          }
   
     public static void main (String [] args){
-         pacientes pc= new pacientes();
-         pc=pc.CargarDatos("D:\\Trabajos\\ESPOL\\Estructuras\\ProyectoFinal\\ProyectoED_Par3\\ProyectoFinal\\src\\Files\\pacientes1.csv");
+         pacientes pc= pacientes.CargarDatos("D:\\Trabajos\\ESPOL\\Estructuras\\ProyectoFinal\\ProyectoED_Par3\\ProyectoFinal\\src\\Files\\pacientes1.csv");
          //Se debe cambiar el path del archivo, ya que se encuentra en otra carpeta
          
          System.out.println("Diccionario DataSet");
