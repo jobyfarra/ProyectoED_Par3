@@ -27,18 +27,17 @@ public class pacientes {
          public void  CargarDatos(String nombreA) {
              try {
                  BufferedReader  br =new BufferedReader(new FileReader(nombreA));
-                 String encabezado= br.readLine();
+                 String encabezado= br.readLine();//se captura el headline de los atributos
                  String[] atributos=encabezado.split(",");
                  for (String x: atributos){
-                    System.out.println(x);
                     dataset.put( x ,new ArrayList <Integer>());
                     Gini.put(x, 0.0);
                  }
                 String linea = br.readLine();
-                 while(linea!=null){
+                 while(linea!=null){//se lee las 299 entradas del archivo
                      String[] datos =linea.split(",");
                      for(int j=0;j<datos.length;j++){
-                        dataset.get(atributos[j]).add(Integer.parseInt(datos[j]));
+                        dataset.get(atributos[j]).add(Integer.parseInt(datos[j]));//se cargan las ArrayLists con los valores de las entradas
                      }
                     linea=br.readLine();
                  }
@@ -53,7 +52,7 @@ public class pacientes {
   
     public static void main (String [] args){
          pacientes pc=new pacientes();
-         
+         //Se debe cambiar el path del archivo, ya que se encuentra en otra carpeta
          pc.CargarDatos("D:\\Trabajos\\ESPOL\\Estructuras\\ProyectoFinal\\ProyectoED_Par3\\ProyectoFinal\\src\\Files\\pacientes1.csv");
          System.out.println("Diccionario DataSet");
          for (Map.Entry entry : pc.dataset.entrySet()) {
