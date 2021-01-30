@@ -10,8 +10,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -127,21 +129,80 @@ public class pacientes {
                  }else{
                      Gini.put(clave,obtenerGini(clave,target));
                  }
-                 
-                 
-                 
-                 
-                     
-                     
-                 
-                 
-             
+
              }
          
          }
-  
+         
+         public List<pacientes>SegmentarDatos(String Atributo){
+             List<pacientes> pcts= new ArrayList<>();
+             pacientes pctP=new pacientes();//Positivos
+             pacientes pctN=new pacientes();//Negativos
+             this.actGini(Atributo);
+             String menorAtributo=obtenerMenor();
+             if (Atributo.equals(menorAtributo)){
+                 pcts=null;
+             }else{
+                  
+                  ArrayList<Integer> atri=dataset.get(menorAtributo);
+                  for(Map.Entry entrada: this.dataset.entrySet()){//mapa
+                      if(!Atributo.equals(menorAtributo)){
+                          String clave=String.valueOf(entrada.getKey());
+                          //System.out.println(entrada.getValue());
+                          Iterator it = atri.listIterator();
+                          int x= (Integer)it.next();
+                          while(it.hasNext()){//lista
+                              //System.out.println(j);
+                              int valor=(int)((ArrayList) entrada.getValue()).get(x);
+                              if( x == 1){
+                                  if(pctP.dataset.get(clave)!=null){pctP.dataset.get(clave).add(valor);}
+                                  else{pctP.dataset.put(clave, new ArrayList<>());}
+                                  //System.out.println(pctP.dataset.get(clave).size());95
+                              
+                              }else{
+                                  if(pctN.dataset.get(clave)==null){pctN.dataset.put(clave, new ArrayList<>());}
+                                  else{pctN.dataset.get(clave).add(valor);}
+                                  //System.out.println(pctN.dataset.get(clave).size());202
+                              
+                              
+                              }x=(Integer)it.next();
+                              
+                      }
+////                      System.out.println(pctP.dataset.get(clave).size());   
+////                      System.out.println(pctN.dataset.get(clave).size());
+                      pctP.Gini.put(clave, 0.0);
+                      pctN.Gini.put(clave, 0.0);
+                      }
+                      
+                  }
+             
+             }
+             pctP.dataset.remove(menorAtributo);
+             pctN.dataset.remove(menorAtributo);
+             pcts.add(pctP);
+             pcts.add(pctN);
+             return pcts;
+         }
+         
+         private String obtenerMenor(){
+             String atributo="";
+             double menor = 0;
+             for (Map.Entry entrada: this.Gini.entrySet()){
+                 double valor=(double)entrada.getValue();
+                 String clave=String.valueOf(entrada.getKey());
+                 if (menor==0){menor=valor;};
+                 
+                 if (valor<menor){
+                     atributo= clave;
+                     menor=valor;   
+                 }             
+             }
+             return atributo;
+         }
+         
     public static void main (String [] args){
          pacientes pc= pacientes.CargarDatos("src/Files/pacientes1.csv");
+         
          //Se debe cambiar el path del archivo, ya que se encuentra en otra carpeta
          
 //         System.out.println("Diccionario DataSet");
@@ -154,11 +215,18 @@ public class pacientes {
 //                    +" ->"+ " Valor : " + entry.getValue());
 //                    }
 //       System.out.println(pc.obtenerGini("edad", "edad"));
-        pc.actGini("edad");
+        pc.actGini("muerte");
+        pc.SegmentarDatos("edad");
+//        
         System.out.println("Diccionario Gini");
-         for (Map.Entry entry : pc.Gini.entrySet()) {
-            System.out.println("Clave : " + entry.getKey()
-                    +" ->"+ " Valor : " + entry.getValue());
+         for (pacientes p : pc.SegmentarDatos("edad")) {
+             
+            for (Map.Entry x: p.dataset.entrySet()){
+                System.out.println("Clave : " + x.getKey()
+                   +" ->"+ " Valor : " + x.getValue());
+                System.out.println(((ArrayList)x.getValue()).size());
+            }
                     }
+         System.out.println(pc.obtenerMenor());
     }
 }
