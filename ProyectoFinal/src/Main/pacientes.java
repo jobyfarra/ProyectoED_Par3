@@ -10,7 +10,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -149,12 +148,11 @@ public class pacientes {
                       if(!Atributo.equals(menorAtributo)){
                           String clave=String.valueOf(entrada.getKey());
                           //System.out.println(entrada.getValue());
-                          Iterator it = atri.listIterator();
-                          int x= (Integer)it.next();
-                          while(it.hasNext()){//lista
+                          
+                          for (int j=0;j<=atri.size()-1;j++){//lista
                               //System.out.println(j);
-                              int valor=(int)((ArrayList) entrada.getValue()).get(x);
-                              if( x == 1){
+                              int valor=(int)((ArrayList) entrada.getValue()).get(j);
+                              if( atri.get(j)==1){
                                   if(pctP.dataset.get(clave)!=null){pctP.dataset.get(clave).add(valor);}
                                   else{pctP.dataset.put(clave, new ArrayList<>());}
                                   //System.out.println(pctP.dataset.get(clave).size());95
@@ -165,7 +163,7 @@ public class pacientes {
                                   //System.out.println(pctN.dataset.get(clave).size());202
                               
                               
-                              }x=(Integer)it.next();
+                              }
                               
                       }
 ////                      System.out.println(pctP.dataset.get(clave).size());   
