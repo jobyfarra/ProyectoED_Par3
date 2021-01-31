@@ -1,4 +1,4 @@
-edad,anemia,CPK,diabetes,bombeo_sangre,hipertension,plaquetas,creatinina,creatisodiumnina,sexo,fumador,muerte
+edad,anemia,cpk,diabetes,bombeo_sangre,hipertension,plaquetas,creatinina,creatisodiumnina,sexo,fumador,muerte
 1,0,1,0,0,1,1,1,0,1,0,1
 0,0,0,0,1,0,1,1,1,1,0,1
 1,0,1,0,0,0,1,1,0,1,1,1

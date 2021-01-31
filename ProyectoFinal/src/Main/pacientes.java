@@ -139,17 +139,20 @@ public class pacientes {
              pacientes pctN=new pacientes();//Negativos
              this.actGini(Atributo);
              String menorAtributo=obtenerMenor();
-             if (Atributo.equals(menorAtributo)){
+             System.out.println(menorAtributo);
+             if (Atributo.equals(menorAtributo) || dataset.get(menorAtributo)==null ){
+                 System.out.println("null");
                  pcts=null;
              }else{
                   
-                  ArrayList<Integer> atri=dataset.get(menorAtributo);
+                  ArrayList<Integer> atri=dataset.get(menorAtributo);//Array De Muerte
+                  //System.out.println(atri.size());
                   for(Map.Entry entrada: this.dataset.entrySet()){//mapa
                       if(!Atributo.equals(menorAtributo)){
                           String clave=String.valueOf(entrada.getKey());
                           //System.out.println(entrada.getValue());
                           
-                          for (int j=0;j<=atri.size()-1;j++){//lista
+                          for (int j=0;j<atri.size();j++){//lista
                               //System.out.println(j);
                               int valor=(int)((ArrayList) entrada.getValue()).get(j);
                               if( atri.get(j)==1){
@@ -161,8 +164,6 @@ public class pacientes {
                                   if(pctN.dataset.get(clave)==null){pctN.dataset.put(clave, new ArrayList<>());}
                                   else{pctN.dataset.get(clave).add(valor);}
                                   //System.out.println(pctN.dataset.get(clave).size());202
-                              
-                              
                               }
                               
                       }
@@ -173,17 +174,17 @@ public class pacientes {
                       }
                       
                   }
-             
-             }
              pctP.dataset.remove(menorAtributo);
              pctN.dataset.remove(menorAtributo);
              pcts.add(pctP);
              pcts.add(pctN);
+             }
+             
              return pcts;
          }
          
          private String obtenerMenor(){
-             String atributo="";
+             String atributo=null;
              double menor = 0;
              for (Map.Entry entrada: this.Gini.entrySet()){
                  double valor=(double)entrada.getValue();
@@ -195,6 +196,26 @@ public class pacientes {
                      menor=valor;   
                  }             
              }
+             return atributo;
+         }
+         
+         private String contarSN(){
+             String atributo=null;
+             int cant=0;
+             for (Map.Entry x:this.dataset.entrySet()){
+                 ArrayList<Integer> c=(ArrayList)x.getValue();
+                 Integer f = c.stream().mapToInt(Integer::intValue).sum();
+                 if(cant< f ){
+                     cant=f;
+                     atributo=String.valueOf(x.getKey());
+                 
+                 }
+             
+             
+             }
+         
+         
+             //System.out.println(cant);
              return atributo;
          }
          
@@ -213,18 +234,29 @@ public class pacientes {
 //                    +" ->"+ " Valor : " + entry.getValue());
 //                    }
 //       System.out.println(pc.obtenerGini("edad", "edad"));
-        pc.actGini("muerte");
-        pc.SegmentarDatos("edad");
-//        
-        System.out.println("Diccionario Gini");
-         for (pacientes p : pc.SegmentarDatos("edad")) {
-             
-            for (Map.Entry x: p.dataset.entrySet()){
-                System.out.println("Clave : " + x.getKey()
-                   +" ->"+ " Valor : " + x.getValue());
-                System.out.println(((ArrayList)x.getValue()).size());
-            }
-                    }
-         System.out.println(pc.obtenerMenor());
+//        pc.actGini("muerte");
+        String a=pc.contarSN();
+        System.out.println(a);
+        List<pacientes> p =pc.SegmentarDatos(a);
+        pacientes pc1=p.get(0);
+         String b=pc1.contarSN();
+        System.out.println(b);
+        List<pacientes> p1 =pc1.SegmentarDatos(b);//Positiva
+//        List<pacientes> p2 =p1.get(0).SegmentarDatos("muerte");//Positiva
+//        List<pacientes> p3 =p2.get(1).SegmentarDatos("muerte");//Positiva
+        
+        
+//        System.out.println("Diccionario Gini");
+//        System.out.println("Positivo"); 
+//         for (pacientes p : pc.SegmentarDatos("muerte")) {
+//             
+//            for (Map.Entry x: p.dataset.entrySet()){
+//                System.out.println("Clave : " + x.getKey()
+//                   +" ->"+ " Valor : " + x.getValue());
+//                System.out.println(((ArrayList)x.getValue()).size());
+//            }
+//             System.out.println("Negativo");
+//                    }
+//         System.out.println(pc.obtenerMenor());
     }
 }
